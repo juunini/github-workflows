@@ -9,18 +9,12 @@ jobs:
   deploy-github-pages:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        bun-version: 0.2.2
-        branch: gh-pages # branch name
-        folder: build # generated folder name after build
-
     steps:
       - uses: actions/checkout@v2
 
       - uses: antongolub/action-setup-bun@v1
         with:
-          bun-version: ${{ matrix.bun-version }}
+          bun-version: 0.2.2
           bun-config: '{"install": {"production": true}}' # You may need to write false if necessary.
           cache: true
           cache-bin: true
@@ -31,6 +25,6 @@ jobs:
       - name: Push gh-pages branch
         uses: JamesIves/github-pages-deploy-action@4.1.5
         with:
-          branch: ${{ matrix.branch }}
-          folder: ${{ matrix.folder }}
+          branch: gh-pages # branch name
+          folder:  build # generated folder name after build
           clean: true
