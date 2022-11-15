@@ -1,0 +1,33 @@
+name: Deploy Serverless AWS
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  deploy-serverless-aws:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        bun-version: 0.2.2
+        stage: production
+        serverless-config: serverless.yml
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: antongolub/action-setup-bun@v1
+        with:
+          bun-version: ${{ matrix.bun-version }}
+          bun-config: '{"install": {"production": false}}'
+          cache: true
+          cache-bin: true
+
+      - run: bun install
+      - run: bun run build
+      - run: bun serverless deploy --stage ${{ matrix.stage }} -c ${{ matrix.serverless-config }}"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
