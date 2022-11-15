@@ -45,3 +45,9 @@ jobs:
           DB_USER: postgres
           DB_PASSWORD: postgres
           DB_DATABASE: postgres
+
+      # If you use codecov
+      #- name: Upload coverage to Codecov
+      #  uses: codecov/codecov-action@v1
+      #  with:
+      #    token: ${{ secrets.CODECOV_TOKEN }}
