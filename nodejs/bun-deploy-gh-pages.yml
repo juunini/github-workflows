@@ -21,6 +21,7 @@ jobs:
 
       - run: bun install
       - run: bun run build
+      - run: touch build/.nojekyll
 
       - name: Push gh-pages branch
         uses: JamesIves/github-pages-deploy-action@4.1.5
