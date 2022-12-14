@@ -11,23 +11,22 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: pnpm/action-setup@v2
         with:
+          version: 6.0.2
           node-version: 16.x
-          cache: npm
-          registry-url: 'https://registry.npmjs.org'
 
       - uses: actions/cache@v3
-        id: npm-cache
+        id: pnpm-cache
         with:
           path: ./node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: ${{ runner.os }}-node-
 
-      - run: npm ci
-        if: ${{ steps.npm-cache.outputs.cache-hit != 'true' }}
+      - run: pnpm install
+        if: ${{ steps.pnpm-cache.outputs.cache-hit != 'true' }}
 
-      - run: npm run build
+      - run: pnpm build
 
       - uses: JS-DevTools/npm-publish@v1
         with:
